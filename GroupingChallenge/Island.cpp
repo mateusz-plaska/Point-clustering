@@ -140,7 +140,20 @@ void Island::kMeansExploitative(const double& populationPercent) {
     #pragma omp parallel for
     for (size_t i = 0; i < populationPercent * population.size(); ++i) {
         uniform_int_distribution<int> dist(0, population.size() - 1);
-        Individual improved = kMeans.getIndividual(*population[dist(randomEngine)].getGenotype());
+        size_t index = dist(randomEngine);
+        Individual improved = kMeans.getIndividual(*population[index].getGenotype());
+        if (improved.calculateFitness(pointDistances) < population[index].calculateFitness(pointDistances)) {
+            #pragma omp critical
+            population[index] = improved;
+        }
+    }
+}
+
+void Island::kMeansForWorst(const double& populationPercent) {
+    KMeans kMeans(maxClusters, 2, randomEngine, points);
+    #pragma omp parallel for
+    for (size_t i = population.size() - populationPercent * population.size(); i < population.size(); ++i) {
+        Individual improved = kMeans.getIndividual(*population[i].getGenotype());
         if (improved.calculateFitness(pointDistances) < population[i].calculateFitness(pointDistances)) {
             #pragma omp critical
             population[i] = improved;
@@ -152,7 +165,7 @@ void Island::kMeansExploitative(const double& populationPercent) {
 void Island::runExplorative(const size_t& iteration, const int& maxIterations) {
     vector<Individual> newPopulation;
   
-    int randomIndividualsCount = 0.1 * population.size();
+    int randomIndividualsCount = 0.15 * population.size();
     if (randomIndividualsCount % 2) {
         randomIndividualsCount++;
     }

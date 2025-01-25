@@ -25,6 +25,7 @@ public:
 
     void runExploitative(const size_t& iteration, const int& maxIterations);
     void kMeansExploitative(const double& populationPercent);
+    void kMeansForWorst(const double& populationPercent);
 
     void runExplorative(const size_t& iteration, const int& maxIterations);
 

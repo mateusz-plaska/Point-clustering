@@ -94,10 +94,6 @@ void GeneticAlgorithm::run() {
             performMigrationExplorative(0.20);
         }
 
-        // 1. Zwiêksz czêstotliwoœæ migracji z eksplorac, jeœli wykryta zostanie stagnacja w wyspie eksploatacyjnej
-        // 2. po migracji zidentyfikuj nowo przyby³e osobniki i wykonaj na nich intensywn¹ lokaln¹ optymalizacjê.
-        // 3. wiecej losowych
-        // 4. wieksza mutacja 
 
         #pragma omp parallel for
         for (size_t i = 0; i < islands.size(); ++i) {
@@ -107,6 +103,11 @@ void GeneticAlgorithm::run() {
                     uniform_int_distribution<int> islandIndex(0, explorativeIslands.size() - 1);
                     size_t index = islandIndex(randomEngine);
                     migrateIsland(explorativeIslands[index], islands[i], migrantsCount);
+                    islands[i]->kMeansForWorst(0.15);
+                }
+                else {
+                    // wiecej losowych
+                    // wieksza mutacja 
                 }
             }
         }
@@ -158,6 +159,8 @@ void GeneticAlgorithm::migrateIsland(Island* source, Island* target, const int& 
         for (size_t j = 0; j < migrantsCount; ++j) {
             target->population[j] = migrants[j];
         }
+
+        target->kMeansForWorst(0.15);
     }
     
 }
