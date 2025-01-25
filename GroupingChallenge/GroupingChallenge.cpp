@@ -2,6 +2,8 @@
 #include "GroupingEvaluator.h"
 #include "Optimizer.h"
 
+#include "KMeans.h"
+
 using namespace NGroupingChallenge;
 
 int main()
@@ -26,10 +28,13 @@ int main()
 
 	c_optimizer.vInitialize();
 
-	for (int i = 0; i < 10; i++)
+	for (int i = 0; i < 1; i++)
 	{
 		c_optimizer.vRunIteration();
 	}
+
+
+	cout << "KONIEC - WYNIK EVALUATOREM: " << pc_evaluator->dEvaluate(c_optimizer.pvGetCurrentBest()) << endl;
 
 	delete pc_evaluator;
 

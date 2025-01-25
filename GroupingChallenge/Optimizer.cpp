@@ -2,9 +2,12 @@
 
 using namespace NGroupingChallenge;
 
+// 420 osobnikow
 COptimizer::COptimizer(CGroupingEvaluator& cEvaluator)
-	: c_evaluator(cEvaluator)
+	: c_evaluator(cEvaluator), geneticAlgorithm(800, c_evaluator.vGetPoints(), c_evaluator.iGetUpperBound(),
+		0.2, 0.8, 2000, c_random_engine)
 {
+
 	random_device c_seed_generator;
 	c_random_engine.seed(c_seed_generator());
 }
@@ -16,11 +19,13 @@ void COptimizer::vInitialize()
 
 	v_current_best.clear();
 	v_current_best.resize(c_evaluator.iGetNumberOfPoints());
+
+	geneticAlgorithm.initializePopulation();
 }
 
 void COptimizer::vRunIteration()
 {
-	vector<int> v_candidate(c_evaluator.iGetNumberOfPoints());
+	/*vector<int> v_candidate(c_evaluator.iGetNumberOfPoints());
 
 	uniform_int_distribution<int> c_candidate_distribution(c_evaluator.iGetLowerBound(), c_evaluator.iGetUpperBound());
 
@@ -37,5 +42,7 @@ void COptimizer::vRunIteration()
 		d_current_best_fitness = d_candidate_fitness;
 	}
 
-	cout << d_current_best_fitness << endl;
+	cout << d_current_best_fitness << endl;*/
+
+	geneticAlgorithm.run();
 }

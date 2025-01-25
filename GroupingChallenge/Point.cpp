@@ -22,4 +22,5 @@ double CPoint::dCalculateDistance(const CPoint& cOther) const
 	}
 
 	return sqrt(d_squared_distance);
+	//return d_squared_distance;
 }

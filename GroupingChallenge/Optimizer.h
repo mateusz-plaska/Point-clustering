@@ -2,6 +2,7 @@
 #define OPTIMIZER_H
 
 #include "GroupingEvaluator.h"
+#include "GeneticAlgorithm.h"
 
 #include <iostream>
 #include <numeric>
@@ -20,7 +21,10 @@ namespace NGroupingChallenge
 		void vInitialize();
 		void vRunIteration();
 
-		vector<int>* pvGetCurrentBest() { return &v_current_best; }
+		const vector<int>* pvGetCurrentBest() { 
+			//return &v_current_best; 
+			return geneticAlgorithm.getBestIndividual().getGenotype();
+		}
 
 	private:
 		CGroupingEvaluator& c_evaluator; 
@@ -29,6 +33,9 @@ namespace NGroupingChallenge
 		vector<int> v_current_best;
 
 		mt19937 c_random_engine;
+
+
+		GeneticAlgorithm geneticAlgorithm;
 	};
 }
 
